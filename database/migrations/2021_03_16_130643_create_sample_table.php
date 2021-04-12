@@ -14,36 +14,38 @@ class CreateSampleTable extends Migration
     public function up()
     {
         Schema::create('sample', function (Blueprint $table) {
-            $table->integer('sampleid');
-            $table->string('qname',10);
+            $table->integer('sampleId');
+            $table->string('quesName',10);
             $table->string('name', 50)->nullable();
             $table->tinyInteger('gender');
-            $table->year('birth');
-            $table->tinyInteger('birthm');
-            $table->tinyInteger('status')->comment('訪問狀態');
-            $table->boolean('mail')->comment('不寄郵件');
-            $table->tinyInteger('mode')->comment('訪問方式');
-            $table->string('licode', 11);
-            $table->bigInteger('MainAdd');
-            $table->bigInteger('MailAdd');
-            $table->longText('note')->nullable();
-            $table->longText('innernote')->nullable();
+            $table->year('birthYear');
+            $table->tinyInteger('birthMonth')->nullable();
+            $table->tinyInteger('status')->comment('訪問狀態')->default(1);
+            $table->boolean('mail')->comment('是否寄送紙本郵件')->default(1);
+            $table->tinyInteger('mode')->comment('訪問方式')->default(1);
+            $table->string('liCode', 11);
+            $table->bigInteger('mainAdd')->comment('訪問地址');
+            $table->bigInteger('mailAdd')->comment('郵寄地址')->nullable();
+            $table->bigInteger('emailFirst')->comment('優先寄送eamil')->nullable();
+            $table->bigInteger('imFirst')->comment('優先使用的通訊軟體')->nullable();
+            $table->longText('note')->nullable()->comment('樣本公開註記');
+            $table->longText('innerNote')->nullable()->comment('樣本內部註記');
             $table->timestamps();
-            $table->primary('sampleid');
+            $table->primary('sampleId');
         });
         Schema::create('sample_add', function (Blueprint $table) {
             $table->id();
-            $table->integer('sampleid');
+            $table->integer('sampleId');
             $table->tinyInteger('category');
             $table->string('add');
             $table->string('note')->nullable();
-            $table->point('GIS')->comment('地理座標');
+            $table->point('GPS')->comment('地理座標');
             $table->boolean('avaliable')->default(1)->comment('是否有效');
             $table->timestamps();
         });
         Schema::create('sample_tel', function (Blueprint $table) {
             $table->id();
-            $table->integer('sampleid');
+            $table->integer('sampleId');
             $table->tinyInteger('category');
             $table->string('number',50);
             $table->string('note')->nullable();
@@ -52,8 +54,7 @@ class CreateSampleTable extends Migration
         });
         Schema::create('sample_email', function (Blueprint $table) {
             $table->id();
-            $table->integer('sampleid');
-            $table->tinyInteger('order')->nullable();
+            $table->integer('sampleId');
             $table->string('email');
             $table->string('note')->nullable();
             $table->boolean('avaliable')->default(1)->comment('是否有效');
@@ -61,8 +62,7 @@ class CreateSampleTable extends Migration
         });
         Schema::create('sample_im', function (Blueprint $table) {
             $table->id();
-            $table->integer('sampleid');
-            $table->tinyInteger('order')->nullable();
+            $table->integer('sampleId');
             $table->string('app');
             $table->string('account');
             $table->boolean('avaliable')->default(1)->comment('是否有效');
@@ -70,7 +70,7 @@ class CreateSampleTable extends Migration
         });
         Schema::create('sample_result', function (Blueprint $table) {
             $table->id();
-            $table->integer('sampleid');
+            $table->integer('sampleId');
             $table->year('year')->comment('訪問年');
             $table->integer('result');
              $table->timestamps();
