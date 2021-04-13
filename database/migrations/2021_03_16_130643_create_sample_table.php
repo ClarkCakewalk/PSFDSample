@@ -39,7 +39,7 @@ class CreateSampleTable extends Migration
             $table->tinyInteger('category');
             $table->string('add');
             $table->string('note')->nullable();
-            $table->point('GPS')->comment('地理座標');
+            $table->point('GPS')->comment('地理座標')->nullable();
             $table->boolean('avaliable')->default(1)->comment('是否有效');
             $table->timestamps();
         });
