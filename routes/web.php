@@ -24,3 +24,5 @@ Route::get('/searchSample', function () {
 });
 
 Route::post('/searchSample', [SearchController::class, 'search']);
+
+Route::get('show/{id}', [SearchController::class, 'show']);
