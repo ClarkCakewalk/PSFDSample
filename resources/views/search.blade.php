@@ -36,9 +36,9 @@
                 <th scope="col">出生年/月</th>
                 <th scope="col">所屬村里</th>
                 <th scope="col">狀態</th>
-                <th scope="col">20結果</th>
-                <th scope="col">18結果</th>
-                <th scope="col">16結果</th>
+                @foreach ($showResult as $item)
+                    <th scope="col">{{$item}}結果</th>
+                @endforeach
                 </tr>
             @foreach ($list as $samples)
                 <tr>
@@ -49,9 +49,9 @@
                     <td><div align="center">{{$samples->birthYear}}/{{$samples->birthMonth}} </div></td>
                     <td><div align="center">{{$samples->liname}} </div></td>
                     <td><div align="center">{{$samples->status}} </div></td>
-                    <td><div align="center">{{$samples->last1}} </div></td>
-                    <td><div align="center">{{$samples->last2}} </div></td>
-                    <td><div align="center">{{$samples->last3}} </div></td>
+                    @foreach ($showResult as $item)
+                    <td><div align="center">{{$samples[$item]}} </div></td>
+                    @endforeach
                 </tr>      
             @endforeach
         </table>   

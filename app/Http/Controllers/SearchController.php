@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Result;
 use App\Models\Search;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
 {
     public function search (Request $request) {
+        $surveyTimes=[1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2014, 2016, 2018, 2020];
+        $showResultTimes=3;
+        $showResult=array_slice($surveyTimes,-3,3);
         $list= Search::select('sampleId', 'quesName', 'name', 'gender', 'birthYear', 'birthMonth', 'status', 'liname')
                 ->join('li', 'sample.liCode', '=', 'li.licode')
                 ->where($request->input('select'), 'like', $request->input('value').'%')
@@ -17,18 +21,14 @@ class SearchController extends Controller
                 ->get();
         foreach ($list as &$sample) {
             $tmps=Result::where('sampleId', $sample->sampleId)
-                        ->whereIn('year', array(2016, 2018, 2020))
+                        ->whereIn('year', $showResult)
                         ->get();
-            $sample->last1='未訪問';
-            $sample->last2='未訪問';
-            $sample->last3='未訪問';
             foreach ($tmps as $tmp) {
-                if ($tmp->year==2020) {
-                    $sample->last1=$tmp->result;
-                } elseif ($tmp->year==2018) {
-                    $sample->last2=$tmp->result;
-                } elseif ($tmp->year==2016) {
-                    $sample->last3=$tmp->result;
+                foreach ($showResult as $item) {
+                    if (empty($sample[$item])) $sample[$item]='未訪問';
+                    if ($tmp->year==$item) {
+                        $sample[$item]=$tmp->result;
+                    }
                 }
              }
              switch ($sample->status) {
@@ -57,15 +57,18 @@ class SearchController extends Controller
             $sample->birthYear=$sample->birthYear-1911;
          }
         return view('search', ['select'=>$request->input('select'),
-                                'value'=>$request->input('value'),
-                                'list'=>$list]);
+                                'list'=>$list,
+                                'showResultTimes'=>$showResultTimes,
+                                'showResult'=>$showResult]);
     }
 
     public function show ($id, Request $request) {
+        $surveyTimes=[1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2014, 2016, 2018, 2020];
         $sample= Search::join('li', 'sample.liCode', '=', 'li.licode')
                 ->where('sampleId', '=', $id)
                 ->first();
 
-        return view('show',['sample'=>$sample]);
+        return view('show',['sample'=>$sample,
+                            'surveyTimes'=>$surveyTimes]);
     } 
 }
