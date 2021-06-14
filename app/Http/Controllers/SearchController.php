@@ -79,13 +79,16 @@ class SearchController extends Controller
         }
         $sampleInfo->result=$result;
 
-
-        $tmp=Sample_Add::select('id', 'category', 'add', 'note')
+        $tmp=Search::find($id)->Adds()
+                            ->where('avaliable', 1)
+                            ->orderByDesc('updated_at')
+                            ->orderByDesc('id');
+/*        $tmp=Sample_Add::select('id', 'category', 'add', 'note')
             ->where('sampleId', '=', $id)
             ->where('avaliable', 1)
             ->orderByDesc('updated_at')
             ->orderByDesc('id')
-            ->get();
+            ->get();*/
          foreach ($tmp as $tmp2) {
             if ($sampleInfo->mainAdd==$tmp2->id) $sampleInfo->mainAddress=$this->NameController->addNote($tmp2->add, $tmp2->note);
             if (!empty($sampleInfo->mailAdd) and $sampleInfo->mailAdd==$tmp2->id) $sampleInfo->mailAddress=$this->NameController->addNote($tmp2->add, $tmp2->note);
