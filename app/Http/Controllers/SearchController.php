@@ -56,22 +56,20 @@ class SearchController extends Controller
                             ->join('li', 'sample.liCode', '=', 'li.licode')
                             ->where('sampleId', '=', $id)
                             ->first();
-        $tmp=Sample_Tel::select('category', 'number', 'note')
-                        ->where('sampleId', $sampleInfo->sampleId)
+        $tmp=Search::find($id)->Tels()
             ->where('avaliable', 1)
             ->orderByDesc('updated_at')
             ->orderByDesc('id')
             ->get();
-        foreach ($tmp as $tmp2) {
+         foreach ($tmp as $tmp2) {
             if ($tmp2->category==1) $sampleInfo->telh=$this->NameController->addNote($tmp2->number, $tmp2->note, $sampleInfo->telh);
             if ($tmp2->category==2) $sampleInfo->telo=$this->NameController->addNote($tmp2->number, $tmp2->note, $sampleInfo->telo);
             if ($tmp2->category==3) $sampleInfo->telm=$this->NameController->addNote($tmp2->number, $tmp2->note, $sampleInfo->telm);
         }
-        $tmp=Sample_Result::select('year', 'result')
-            ->where('sampleId', '=', $id)
+        $tmp=Search::find($id)->Results()
             ->orderBy('year')
             ->get();
-        foreach ($surveyTimes as $time) {
+         foreach ($surveyTimes as $time) {
             $result[$time]='未受訪';
         }
         foreach ($tmp as $tmp2) {
@@ -79,16 +77,11 @@ class SearchController extends Controller
         }
         $sampleInfo->result=$result;
 
-        $tmp=Search::find($id)->Adds()
+        $tmp=Search::find($id)->Adds()    
                             ->where('avaliable', 1)
                             ->orderByDesc('updated_at')
-                            ->orderByDesc('id');
-/*        $tmp=Sample_Add::select('id', 'category', 'add', 'note')
-            ->where('sampleId', '=', $id)
-            ->where('avaliable', 1)
-            ->orderByDesc('updated_at')
-            ->orderByDesc('id')
-            ->get();*/
+                            ->orderByDesc('id')
+                            ->get();
          foreach ($tmp as $tmp2) {
             if ($sampleInfo->mainAdd==$tmp2->id) $sampleInfo->mainAddress=$this->NameController->addNote($tmp2->add, $tmp2->note);
             if (!empty($sampleInfo->mailAdd) and $sampleInfo->mailAdd==$tmp2->id) $sampleInfo->mailAddress=$this->NameController->addNote($tmp2->add, $tmp2->note);
@@ -97,16 +90,14 @@ class SearchController extends Controller
             if ($tmp2->category==2) $sampleInfo->addc=$this->NameController->addNote($tmp2->add, $tmp2->note, $sampleInfo->addc);
             if ($tmp2->category==3) $sampleInfo->addo=$this->NameController->addNote($tmp2->add, $tmp2->note, $sampleInfo->addo);
         }
-        $tmp=Sample_Email::select('email', 'note')
-            ->where('sampleId', '=', $id)
+        $tmp=Search::find($id)->Emails()
             ->orderByDesc('updated_at')
             ->orderByDesc('id')
             ->get();
         foreach ($tmp as $tmp2) {
             $sampleInfo->email=$this->NameController->addNote($tmp2->email, $tmp2->note);
         }
-        $tmp=Sample_Im::select('app', 'account')
-            ->where('sampleId', '=', $id)
+        $tmp=Search::find($id)->Ims()
             ->orderByDesc('updated_at')
             ->orderByDesc('id')
             ->get();

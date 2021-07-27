@@ -2,6 +2,7 @@
 @section('title','樣本')
 @section('content')
 <h3>樣本資訊</h3>
+  <?php var_dump($sample);?>
   <table width="100%" border="0">
     <tr>
       <td width="15%">樣本編號：{{$sample->sampleId}}</td>
