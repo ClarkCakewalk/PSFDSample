@@ -2,7 +2,6 @@
 @section('title','樣本')
 @section('content')
 <h3>樣本資訊</h3>
-  <?php var_dump($sample);?>
   <table width="100%" border="0">
     <tr>
       <td width="15%">樣本編號：{{$sample->sampleId}}</td>
@@ -48,7 +47,7 @@
       <td colspan="7">手機：{{$sample->telm}} </td>
     </tr>
     <tr>
-      <td colspan="7">主地址村里：{{$sample->liname}} ({{$sample->liCode}}  )</td>
+      <td colspan="7">主地址村里：{{$sample->liname[0]['liname']}} ({{$sample->liCode}}  )</td>
     </tr>
     <tr>
       <td>主地址：</td>

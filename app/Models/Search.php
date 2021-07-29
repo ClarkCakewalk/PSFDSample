@@ -31,4 +31,8 @@ class Search extends Model
     public function Ims () {
         return $this->hasMany(Sample_Im::class, 'sampleId');
     }
+
+    public function Liname () {
+        return $this->hasOne(li::class, 'licode', 'liCode');
+    }
 }

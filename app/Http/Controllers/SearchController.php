@@ -52,10 +52,8 @@ class SearchController extends Controller
 
     public function show ($id, Request $request) {
         $surveyTimes=[1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2014, 2016, 2018, 2020];
-        $sampleInfo=Search::select('sample.*', 'liname')
-                            ->join('li', 'sample.liCode', '=', 'li.licode')
-                            ->where('sampleId', '=', $id)
-                            ->first();
+        $sampleInfo=Search::find($id);
+        $sampleInfo->liname=$sampleInfo->Liname()->select('liname')->get();
         $tmp=Search::find($id)->Tels()
             ->where('avaliable', 1)
             ->orderByDesc('updated_at')
