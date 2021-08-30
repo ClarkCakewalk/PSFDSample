@@ -23,6 +23,10 @@ Route::get('/searchSample', function () {
     return view('search');
 });
 
+Route::get('/addSample', function() {
+    return view('addSample');
+});
+
 Route::post('/searchSample', [SearchController::class, 'search']);
 
 Route::get('show/{id}', [SearchController::class, 'show']);
