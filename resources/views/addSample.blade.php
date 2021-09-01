@@ -2,17 +2,17 @@
 @section('title','新增樣本')
 @section('content')
 <h3>新增樣本</h3>
-<form method="POST" action="">
+<form method="POST" action="/sampleEdit">
     <table width="100%" border="0">
         <tr>
           <td width="15%">
               <label>
-                  樣本編號：<input type="text" name="sampleId">
+                  樣本編號：<input type="text" name="sampleId" required maxlength="7" minlength="7" pattern="^[0-9]*$">
               </label>
             </td>
           <td width="15%">
               <label>
-                  樣本代號：<input type="text" name="qname">
+                  樣本代號：<input type="text" name="qname" required>
               </label>
             </td>
           <td width="25%">
@@ -58,7 +58,7 @@
             </td>
             <td>
                 <label>
-                    出生年月：<input type="text" name="sampleBirth">年
+                    出生年月：<input type="text" name="sampleBirth" required minlength="4" maxlength="4" pattern="^\+?[1,2][0,9][0-9]*$">年
                     <select name="sampleBirthM">
                         <option value=0> </option>
                         <option value=1>1</option>
@@ -76,6 +76,9 @@
                     </select>月
                 </label>
             </td>
+        </tr>
+        <tr>
+            <td><input type="submit"></td>
         </tr>
     </table>
     @csrf

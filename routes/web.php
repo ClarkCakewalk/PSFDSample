@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SearchController;
+use App\http\Controllers\SampleController;
 use Illuminate\Http\Request;
 
 /*
@@ -23,10 +24,10 @@ Route::get('/searchSample', function () {
     return view('search');
 });
 
-Route::get('/addSample', function() {
-    return view('addSample');
-});
-
 Route::post('/searchSample', [SearchController::class, 'search']);
 
 Route::get('show/{id}', [SearchController::class, 'show']);
+
+Route::get('/sampleEdit/create', [SampleController::class,'create']);
+
+Route::post('/sampleEdit', [SampleController::class, 'store']);
