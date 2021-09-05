@@ -1,6 +1,16 @@
 @extends('layouts.app')
 @section('title','新增樣本')
 @section('content')
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+        var i=1;
+        $('#add').click(function(){
+            $('#input').clone().attr('id', 'input'+i).insertBefore('#add_tr');
+            i++;
+        });
+    });
+</script>
 <h3>新增樣本</h3>
 @if ($errors->any())
     <div class="alert alert-danger">
@@ -79,6 +89,7 @@
             </td>
         </tr>
         <tr>
+<!--
             <td colspan="3">
                 <table>
                     <tr>
@@ -90,7 +101,7 @@
                         <th>地址</th>
                         <th>備註</th>
                     </tr>
-                    <tr>
+                    <tr id="input">
                         <td><input type="radio" name="add1st" checked></td>
                         <td><select name="addCat[]" required>
                                 <option></option>
@@ -101,6 +112,9 @@
                         </td>
                         <td><input type="text" name="add[]" value="{{old('add[1]')}}" required></td>
                         <td><input type="text" name="addNote[]" value="{{old('addNote[1]')}}"></td>
+                    </tr>
+                    <tr id="add_tr">
+                        <td> <input type='button' id='add' value='新增'></td>
                     </tr>
                 </table>
             </td>
@@ -114,7 +128,7 @@
                         <th>電話</th>
                         <th>備註</th>
                     </tr>
-                    <tr>
+                    <tr id="input">
                         <td><select name="telCat[]" required>
                                 <option></option>
                                 <option value="1">住家</option>
@@ -124,6 +138,9 @@
                         </td>
                         <td><input type="tel" name="tel[]" value="{{old('tel[1]')}}" required></td>
                         <td><input type="text" name="telNote[]" value="{{old('telNote[1]')}}"></td>
+                    </tr>
+                    <tr id="add_tr">
+                        <td> <input type='button' id='add' value='新增'></td>
                     </tr>
                 </table>
             </td>
@@ -173,9 +190,10 @@
                 </table>
             </td>
         </tr>
+    -->
         <tr>
             <td colspan="3">備註：<br><textarea name="note" rows="3" cols="100">{{old('note')}}</textarea></td>
-            <td rowspan="2" colspan="2">
+            <!--<td rowspan="2" colspan="2">
                 <table>
                     <tr><th colspan="2">結果代碼</th></tr>
                     <tr>
@@ -187,7 +205,7 @@
                         <td><input type="number" name="result[]" minlength="1" maxlength="3" value="{{old('result[1]')}}"></td>
                     </tr>
                 </table>
-            </td>
+            </td>-->
         </tr>
         <tr><td colspan="3">內部備註：<br><textarea name="innerNote" rows="3" cols="100">{{old('innerNote')}}</textarea></td></tr>
         <tr>
