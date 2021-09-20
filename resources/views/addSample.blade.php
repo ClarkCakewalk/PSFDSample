@@ -37,25 +37,25 @@
           <td width="25%">
               <label>
                   樣本狀態：<select name="sampleType" >
-                            <option value=1 selected>持續追蹤</option>
-                            <option value=2>停止訪問</option>
+                            <option value=1 @if(old('sampleType')==1 | empty(old('sampleType'))) selected @endif >持續追蹤</option>
+                            <option value=2 @if(old('sampleType')==2) selected @endif >停止訪問</option>
                       </select>
               </label>
             </td>
           <td width="15%">
               <label>
               紙本通知/訪函：<select name="sendMail">
-                            <option value=1 selected>正常郵寄</option>
-                            <option value=0>停止寄送</option>
+                            <option value=1 @if(old('sendMail')==1 | empty(old('sendMail'))) selected @endif>正常郵寄</option>
+                            <option value=2 @if(old('sendMail')==2) selected @endif>停止寄送</option>
                             </select>
               </label>
             </td>
           <td width="15%">
               <label>
                   訪問途徑：<select name="method">
-                            <option value=1 selected>面訪</option>
-                            <option value=2>網調</option>
-                            <option value=3>視訊</option>
+                            <option value=1 @if(old('method')==1 | empty(old('method'))) selected @endif>面訪</option>
+                            <option value=2 @if(old('method')==2) selected @endif>網調</option>
+                            <option value=3 @if(old('method')==3) selected @endif>視訊</option>
                         </select>
               </label>
             </td>
@@ -89,7 +89,7 @@
             </td>
         </tr>
         <tr>
-<!--
+
             <td colspan="3">
                 <table>
                     <tr>
@@ -101,21 +101,32 @@
                         <th>地址</th>
                         <th>備註</th>
                     </tr>
-                    <tr id="input">
-                        <td><input type="radio" name="add1st" checked></td>
-                        <td><select name="addCat[]" required>
+                    <tr>
+                        <td><input type="radio" name="add1st" value="1" @if(old('add1st')==1 | empty(old('add.1st'))) checked @endif></td>
+                        <td><select name="add[1][Cat]" required>
                                 <option></option>
-                                <option value="1">住家</option>
-                                <option value="2">公司/學校</option>
-                                <option value="3">其他</option>
+                                <option value="1" @if (old('add.1.Cat')==1) selected @endif >住家</option>
+                                <option value="2" @if (old('add.1.Cat')==2) selected @endif>公司/學校</option>
+                                <option value="3" @if (old('add.1.Cat')==3) selected @endif>其他</option>
                             </select>
                         </td>
-                        <td><input type="text" name="add[]" value="{{old('add[1]')}}" required></td>
-                        <td><input type="text" name="addNote[]" value="{{old('addNote[1]')}}"></td>
+                        <td><input type="text" name="add[1][address]" value="{{old('add.1.address')}}" required></td>
+                        <td><input type="text" name="add[1][note]" value="{{old('add.1.note')}}"></td>
                     </tr>
-                    <tr id="add_tr">
-                        <td> <input type='button' id='add' value='新增'></td>
+                    @for($i=2; $i<=5; $i++)
+                    <tr>
+                        <td><input type="radio" name="add1st" value="{{$i}}" @if(old('add1st')==$i) checked @endif></td>
+                        <td><select name="add[{{$i}}][Cat]" >
+                                <option></option>
+                                <option value="1" @if(old('add.'.$i.'.Cat')==1) selected @endif>住家</option>
+                                <option value="2" @if(old('add.'.$i.'.Cat')==2) selected @endif>公司/學校</option>
+                                <option value="3" @if(old('add.'.$i.'.Cat')==3) selected @endif>其他</option>
+                            </select>
+                        </td>
+                        <td><input type="text" name="add[{{$i}}][address]" value="{{old('add.'.$i.'.address')}}" ></td>
+                        <td><input type="text" name="add[{{$i}}][note]" value="{{old('add.'.$i.'.note')}}"></td>
                     </tr>
+                    @endfor
                 </table>
             </td>
             <td colspan="2">
@@ -128,20 +139,19 @@
                         <th>電話</th>
                         <th>備註</th>
                     </tr>
-                    <tr id="input">
-                        <td><select name="telCat[]" required>
+                    @for($i=1; $i<=5; $i++)
+                    <tr >
+                        <td><select name="tel[{{$i}}][Cat]">
                                 <option></option>
-                                <option value="1">住家</option>
-                                <option value="2">公司/學校</option>
-                                <option value="3">其他</option>
+                                <option value="1" @if(old('tel.'.$i.'.Cat')==1) selected @endif>住家</option>
+                                <option value="2" @if(old('tel.'.$i.'.Cat')==2) selected @endif>公司/學校</option>
+                                <option value="3" @if(old('tel.'.$i.'.Cat')==3) selected @endif>行動電話</option>
                             </select>
                         </td>
-                        <td><input type="tel" name="tel[]" value="{{old('tel[1]')}}" required></td>
-                        <td><input type="text" name="telNote[]" value="{{old('telNote[1]')}}"></td>
+                        <td><input type="tel" name="tel[{{$i}}][Num]" value="{{old('tel.'.$i.'.Num')}}"></td>
+                        <td><input type="text" name="tel[{{$i}}][Note]" value="{{old('tel.'.$i.'.Note')}}"></td>
                     </tr>
-                    <tr id="add_tr">
-                        <td> <input type='button' id='add' value='新增'></td>
-                    </tr>
+                    @endfor
                 </table>
             </td>
         </tr>
@@ -156,11 +166,13 @@
                         <th>Email Address</th>
                         <th>備註</th>
                     </tr>
+                    @for($i=1; $i<=3; $i++)
                     <tr>
-                        <td><input type="radio" name="email1st" checked></td>
-                        <td><input type="text" name="email[]" value="{{old('email[1]')}}" required></td>
-                        <td><input type="text" name="emailNote[]" value="{{old('emailNote[1]')}}"></td>
+                        <td><input type="radio" name="email[1st]" value="{{$i}}" @if(old('email.1st')==$i) checked @endif ></td>
+                        <td><input type="text" name="email[{{$i}}][Address]" value="{{old('email.'.$i.'.Address')}}"></td>
+                        <td><input type="text" name="email[{{$i}}][Note]" value="{{old('email.'.$i.'.Note')}}"></td>
                     </tr>
+                    @endfor
                 </table>
             </td>
             <td colspan="2">
@@ -173,27 +185,28 @@
                         <th>ID</th>
                         <th>備註</th>
                     </tr>
+                    @for($i=1; $i<=3; $i++)
                     <tr>
-                        <td><select name="imCat[]" required>
+                        <td><select name="im[{{$i}}][Cat]">
                                 <option></option>
-                                <option value="1">Facebook</option>
-                                <option value="2">Line</option>
-                                <option value="3">微信</option>
-                                <option value="4">Skype</option>
-                                <option value="5">Instagram</option>
-                                <option value="6">其他</option>
+                                <option value="1" @if(old('im.'.$i.'.Cat')==1) selected @endif>Facebook</option>
+                                <option value="2" @if(old('im.'.$i.'.Cat')==2) selected @endif>Line</option>
+                                <option value="3" @if(old('im.'.$i.'.Cat')==3) selected @endif>微信</option>
+                                <option value="4" @if(old('im.'.$i.'.Cat')==4) selected @endif>Skype</option>
+                                <option value="5" @if(old('im.'.$i.'.Cat')==5) selected @endif>Instagram</option>
+                                <option value="6" @if(old('im.'.$i.'.Cat')==6) selected @endif>其他</option>
                             </select>
                         </td>
-                        <td><input type="text" name="im[]" value="{{old('im[1]')}}" required></td>
-                        <td><input type="text" name="imNote[]" value="{{old('imNote[1]')}}"></td>
+                        <td><input type="text" name="im[{{$i}}][Id]" value="{{old('im.'.$i.'.Id')}}"></td>
+                        <td><input type="text" name="im[{{$i}}][Note]" value="{{old('im.'.$i.'.Note')}}"></td>
                     </tr>
+                    @endfor
                 </table>
             </td>
         </tr>
-    -->
         <tr>
             <td colspan="3">備註：<br><textarea name="note" rows="3" cols="100">{{old('note')}}</textarea></td>
-            <!--<td rowspan="2" colspan="2">
+            <td rowspan="2" colspan="2">
                 <table>
                     <tr><th colspan="2">結果代碼</th></tr>
                     <tr>
@@ -205,7 +218,7 @@
                         <td><input type="number" name="result[]" minlength="1" maxlength="3" value="{{old('result[1]')}}"></td>
                     </tr>
                 </table>
-            </td>-->
+            </td>
         </tr>
         <tr><td colspan="3">內部備註：<br><textarea name="innerNote" rows="3" cols="100">{{old('innerNote')}}</textarea></td></tr>
         <tr>

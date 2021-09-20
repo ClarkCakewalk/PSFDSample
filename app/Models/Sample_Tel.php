@@ -9,4 +9,5 @@ class Sample_Tel extends Model
 {
     use HasFactory;
     protected $table = 'sample_tel';
+    protected $fillable = ['sampleId','category', 'number', 'note'];
 }
