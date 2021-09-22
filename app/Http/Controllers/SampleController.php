@@ -42,23 +42,6 @@ class SampleController extends Controller
         }
         return ['addcode'=>$addCode, 'licode'=>$li[0]['licode']];
     }
-/*    public function addTel ($id, $tel) {
-        $addSampleTel = new Sample_Tel;
-        foreach($tel as $teltmp) {
-            if (!empty($teltmp['Cat'])) {
-                $teldata[]=['sampleId'=>$id, 
-                            'category'=>$teltmp['Cat'],
-                            'number'=>$teltmp['Num'],
-                            'note'=>$teltmp['Note']];
-                $addSampleTel->sampleId = $id;
-                $addSampleTel->category = $teltmp['Cat'];
-                $addSampleTel->number = $teltmp['Num'];
-                $addSampleTel->note = $teltmp['Note'];
-            }
-        }
-        $addSampleTel->saveMany();
- //       $addSampleTel->insert($teldata);
-    }*/
     public function create()
     {
         return view('addSample');
@@ -68,9 +51,9 @@ class SampleController extends Controller
         $validated= $request->validate([
             'sampleId'=>'unique:sample,sampleId'
         ]);
+        $sampleID=$request->sampleId;
         $mainAdd=$request['add'][$request['add1st']]['address'];
- //       $addAdds=$this->addAddress($request->sampleId, $request->add1st, $request->add);
-        foreach($request->tel as $teltmp) {
+         foreach($request->tel as $teltmp) {
             if (!empty($teltmp['Cat'])) {
                 $teldata[]=['category'=>$teltmp['Cat'],
                             'number'=>$teltmp['Num'],
@@ -79,10 +62,22 @@ class SampleController extends Controller
         }
         foreach($request->add as $addtmp) {
             if(!empty($addtmp['Cat'])) {
-                $addData[]=['sampleId'=>$request->sampleId,
-                            'category'=>$addtmp['Cat'],
+                $addData[]=['category'=>$addtmp['Cat'],
                             'add'=>$addtmp['address'],
                             'note'=>$addtmp['note']];
+            }
+        }
+        foreach($request->email as $emailtmp) {
+            if(!empty($emailtmp['Address'])) {
+                $emailData[]=['email'=>$emailtmp['Address'],
+                            'note'=>$emailtmp['Note']];
+            }
+        }
+        foreach($request->im as $imtmp) {
+            if(!empty($imtmp['Id'])) {
+                $imData[]=['app'=>$imtmp['APP'],
+                            'account'=>$imtmp['Id'],
+                            'note'=>$imtmp['Note']];
             }
         }
         $addSample=new Sample_Basic;
@@ -93,12 +88,16 @@ class SampleController extends Controller
         $addSample->birthYear = $request->sampleBirth;
         $addSample->birthMonth = $request->sampleBirthM;
         $addSample->liCode = $this->getLiId($mainAdd);
-//        $addSample->mainAdd = $addAdds['addcode'];
         $addSample->save();
         $addSample = Sample_Basic::where('sampleId', $request->sampleId)->first();
-        $addSample->Telephone()->createMany($teldata);
+        if(!empty($teldata)) $addSample->Telephone()->createMany($teldata);
         $addSample->Address()->createMany($addData);
+        if(!empty($emailData)) $addSample->Email()->createMany($emailData);
+        if(!empty($imData)) $addSample->Massanger()->createMany($imData);
         $addSample->mainAdd = $addSample->Address()->where('add', 'like', $mainAdd)->first()->id;
+        if(!empty($emailData)) $addSample->emailFirst = $addSample->Email()->where('email', 'like', $request['email'][$request['email1st']]['Address'])->first()->id;
+        if(!empty($imData)) $addSample->imFirst = $addSample->Massanger()->where('app', 'like', $request['im'][$request['im1st']]['APP'])->where('account', 'like', $request['im'][$request->im1st]['Id'])->first()->id;
         $addSample->save();
+        return redirect()->action([SearchController::class, 'show'],['id'=>$sampleID]);
     }
 }

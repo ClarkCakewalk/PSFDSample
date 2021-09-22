@@ -168,7 +168,7 @@
                     </tr>
                     @for($i=1; $i<=3; $i++)
                     <tr>
-                        <td><input type="radio" name="email[1st]" value="{{$i}}" @if(old('email.1st')==$i) checked @endif ></td>
+                        <td><input type="radio" name="email1st" value="{{$i}}" @if(old('email1st')==$i) checked @endif ></td>
                         <td><input type="text" name="email[{{$i}}][Address]" value="{{old('email.'.$i.'.Address')}}"></td>
                         <td><input type="text" name="email[{{$i}}][Note]" value="{{old('email.'.$i.'.Note')}}"></td>
                     </tr>
@@ -178,23 +178,25 @@
             <td colspan="2">
                 <table>
                     <tr>
-                        <th colspan="3">即時通訊</th>
+                        <th colspan="4">即時通訊</th>
                     </tr>
                     <tr>
+                        <th>優先</th>
                         <th>通訊軟體</th>
                         <th>ID</th>
                         <th>備註</th>
                     </tr>
                     @for($i=1; $i<=3; $i++)
                     <tr>
-                        <td><select name="im[{{$i}}][Cat]">
+                        <td><input type="radio" name="im1st" value="{{$i}}" @if(old('im1st')==$i) checked @endif ></td>
+                        <td><select name="im[{{$i}}][APP]" >
                                 <option></option>
-                                <option value="1" @if(old('im.'.$i.'.Cat')==1) selected @endif>Facebook</option>
-                                <option value="2" @if(old('im.'.$i.'.Cat')==2) selected @endif>Line</option>
-                                <option value="3" @if(old('im.'.$i.'.Cat')==3) selected @endif>微信</option>
-                                <option value="4" @if(old('im.'.$i.'.Cat')==4) selected @endif>Skype</option>
-                                <option value="5" @if(old('im.'.$i.'.Cat')==5) selected @endif>Instagram</option>
-                                <option value="6" @if(old('im.'.$i.'.Cat')==6) selected @endif>其他</option>
+                                <option value="1" @if(old('im.'.$i.'.APP')==1) selected @endif>Facebook</option>
+                                <option value="2" @if(old('im.'.$i.'.APP')==2) selected @endif>Line</option>
+                                <option value="3" @if(old('im.'.$i.'.APP')==3) selected @endif>微信</option>
+                                <option value="4" @if(old('im.'.$i.'.APP')==4) selected @endif>Skype</option>
+                                <option value="5" @if(old('im.'.$i.'.APP')==5) selected @endif>Instagram</option>
+                                <option value="6" @if(old('im.'.$i.'.APP')==6) selected @endif>其他</option>
                             </select>
                         </td>
                         <td><input type="text" name="im[{{$i}}][Id]" value="{{old('im.'.$i.'.Id')}}"></td>

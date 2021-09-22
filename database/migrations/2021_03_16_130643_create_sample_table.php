@@ -65,6 +65,7 @@ class CreateSampleTable extends Migration
             $table->integer('sampleId');
             $table->string('app');
             $table->string('account');
+            $table->string('note')->nullable();
             $table->boolean('avaliable')->default(1)->comment('是否有效');
             $table->timestamps();
         });

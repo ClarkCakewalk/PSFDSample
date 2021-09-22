@@ -9,4 +9,5 @@ class Sample_Im extends Model
 {
     use HasFactory;
     protected $table = 'sample_im';
+    protected $fillable = ['app', 'account', 'note'];
 }

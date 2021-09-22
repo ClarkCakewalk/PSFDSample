@@ -9,4 +9,5 @@ class Sample_Email extends Model
 {
     use HasFactory;
     protected $table = 'sample_email';
+    protected $fillable = ['email', 'note'];
 }
