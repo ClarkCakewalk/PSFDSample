@@ -36,4 +36,6 @@ Route::post('/sampleEdit', [SampleController::class, 'store']);
 
 Route::get('li/{liname}', [LiController::class, 'getLiId']);
 
+Route::get('/sampleEdit/update/{id}', [SampleController::class, 'editSampleShow']);
+
 Route::get('test', [TestController::class, 'testAddTel']);

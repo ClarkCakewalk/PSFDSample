@@ -100,4 +100,15 @@ class SampleController extends Controller
         $addSample->save();
         return redirect()->action([SearchController::class, 'show'],['id'=>$sampleID]);
     }
+
+    public function editSampleShow ($id, Request $request) {
+      $sampleInfo = Sample_Basic::where('sampleId', $id)->first();
+      $sampleInfo->add = $sampleInfo->Address()->get();
+      $sampleInfo->tel = $sampleInfo->Telephone()->get();
+      $sampleInfo->email = $sampleInfo->Email()->get();
+      $sampleInfo->im = $sampleInfo->Massanger()->get();
+      $sampleInfo->result = $sampleInfo->Result()->get();
+
+      return view('editSample', ['sample'=>$sampleInfo]);
+    }
 }

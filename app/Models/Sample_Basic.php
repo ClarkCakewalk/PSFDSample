@@ -29,4 +29,8 @@ class Sample_Basic extends Model
     public function Massanger () {
         return $this->hasMany(Sample_Im::class, 'sampleId');
     }
+
+    public function Result () {
+        return $this->hasMany(Sample_Result::class, 'sampleId');
+    }
 }
